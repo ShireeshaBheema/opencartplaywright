@@ -1,0 +1,6 @@
+Exception occured while clicking 'My Account': Error: locator.click: Test timeout of 30000ms exceeded.
+Call log:
+  - waiting for locator('span:has-text("My Account")')
+    - waiting for" https://demo.opencart.com/upload" navigation to finish...
+    - navigated to "https://demo.opencart.com/upload"
+
