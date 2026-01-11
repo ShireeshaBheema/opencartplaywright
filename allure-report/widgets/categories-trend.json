@@ -1,1 +1,1 @@
-[{"data":{"Test defects":2}}]
+[{"buildOrder":2,"reportUrl":"http://localhost:8080/job/pwopencart-local1/2/allure","reportName":"AllureReport","data":{"Test defects":3}},{"buildOrder":1,"reportUrl":"http://localhost:8080/job/pwopencart-local1/1/allure","reportName":"AllureReport","data":{"Test defects":3}}]
