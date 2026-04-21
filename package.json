@@ -10,7 +10,11 @@
     "test:datadriven":"playwright test --grep @datadriven",
     "test:master:headed":"playwright test --grep @master --headed",
     "test:endtoend":"playwright test --grep @endtoend --headed",
-    "test:sanity:debug":"playwright test --grep @sanity --debug"
+    "test:sanity:debug":"playwright test --grep @sanity --debug",
+    "test": "playwright test",
+    "test:chromium": "playwright test --project=chromium",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report"
   },
   "keywords": [],
   "author": "",
