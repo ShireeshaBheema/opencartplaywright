@@ -1,39 +1,43 @@
-name: Playwright Tests
-on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
-jobs:
-  test:
-    timeout-minutes: 60
-    runs-on: windows-latest
+# Playwright CI pipeline for Azure DevOps
+# Docs: https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-    
-    steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+trigger:
+  - main
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    
-    - name: Install dependencies
-      run: npm ci
+pool:
+  vmImage: ubuntu-latest
 
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '20.x'
+    displayName: 'Install Node.js'
 
-    - name: Run Playwright tests
-      #run: npx playwright test
-      #run: npx playwright test --grep "@sanity"
-      run: npm run test:sanity
-    
-    - name: Upload Playwright HTML Report
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+  - script: npm ci
+    displayName: 'Install dependencies'
+
+  - script: npx playwright install --with-deps
+    displayName: 'Install Playwright browsers'
+
+  - script: npx playwright test
+    displayName: 'Run Playwright tests'
+    env:
+      CI: 'true'
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'test-results/junit.xml'
+      mergeTestResults: true
+      failTaskOnFailedTests: true
+      testRunTitle: 'Playwright Tests'
+    displayName: 'Publish test results'
+
+  - task: PublishPipelineArtifact@1
+    condition: succeededOrFailed()
+    inputs:
+      targetPath: 'playwright-report'
+      artifact: 'playwright-report'
+      publishLocation: 'pipeline'
+    displayName: 'Publish Playwright HTML report'
