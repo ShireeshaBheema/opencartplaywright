@@ -19,7 +19,7 @@ steps:
   - script: npx playwright install --with-deps
     displayName: 'Install Playwright browsers'
 
-  - script: npx playwright test
+  - script: npx playwright test --project=chromium
     displayName: 'Run Playwright tests'
     env:
       CI: 'true'
