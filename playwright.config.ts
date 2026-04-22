@@ -19,7 +19,8 @@ export default defineConfig({
     ['html',{outputFolder:'playwright-report'}],
     ['allure-playwright',{outFolder:'../reports/allure-results'}],
     ['dot'],
-    ['list']
+    ['list'],
+    ['junit', { outputFile: 'results.xml' }]
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
