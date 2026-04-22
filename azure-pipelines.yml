@@ -22,8 +22,8 @@ jobs:
   - script: npm ci
     displayName: 'Install dependencies'
 
-  - script: npx playwright install --with-deps
-    displayName: 'Install Playwright Browsers'
+  - script: npx playwright install chromium
+    displayName: 'Install Chromium only'
 
   - script: npm run test:sanity:chromium
     displayName: 'Run Playwright Tests (Chromium)'
