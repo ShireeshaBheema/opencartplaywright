@@ -5,7 +5,7 @@ pr:
 - master
 
 pool:
-  name: 'Default'   # your self-hosted agent pool
+  name: 'Default'
 
 jobs:
 - job: PlaywrightTests
@@ -25,9 +25,8 @@ jobs:
   - script: npx playwright install --with-deps
     displayName: 'Install Playwright Browsers'
 
-  
   - script: npm run test:sanity:chromium
-  displayName: 'Run Playwright Tests (Chromium)'
+    displayName: 'Run Playwright Tests (Chromium)'
 
   - task: PublishBuildArtifacts@1
     condition: always()
