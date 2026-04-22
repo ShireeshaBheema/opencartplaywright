@@ -25,8 +25,9 @@ jobs:
   - script: npx playwright install --with-deps
     displayName: 'Install Playwright Browsers'
 
-  - script: npm run test:sanity
-    displayName: 'Run Playwright Tests'
+  
+  - script: npm run test:sanity:chromium
+  displayName: 'Run Playwright Tests (Chromium)'
 
   - task: PublishBuildArtifacts@1
     condition: always()
