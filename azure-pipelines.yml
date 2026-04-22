@@ -34,3 +34,16 @@ jobs:
       pathToPublish: 'playwright-report'
       artifactName: 'playwright-report'
       publishLocation: 'Container'
+
+  - task: PublishTestResults@2
+    condition: always()
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/results.xml'
+
+  - task: Cache@2
+    inputs:
+      key: 'npm | "$(Agent.OS)" | package-lock.json'
+      path: 'node_modules'
+      restoreKeys: |
+        npm | "$(Agent.OS)"
