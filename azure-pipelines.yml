@@ -1,43 +1,36 @@
-# Playwright CI pipeline for Azure DevOps
-# Docs: https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
-  - main
+- master
+
+pr:
+- master
 
 pool:
-  vmImage: ubuntu-latest
+  name: 'Default'   # your self-hosted agent pool
 
-steps:
+jobs:
+- job: PlaywrightTests
+  timeoutInMinutes: 60
+
+  steps:
+  - checkout: self
+
   - task: NodeTool@0
     inputs:
-      versionSpec: '20.x'
-    displayName: 'Install Node.js'
+      versionSpec: '18.x'
+    displayName: 'Set up Node.js'
 
   - script: npm ci
     displayName: 'Install dependencies'
 
   - script: npx playwright install --with-deps
-    displayName: 'Install Playwright browsers'
+    displayName: 'Install Playwright Browsers'
 
-  - script: npx playwright test --project=chromium
-    displayName: 'Run Playwright tests'
-    env:
-      CI: 'true'
+  - script: npm run test:sanity
+    displayName: 'Run Playwright Tests'
 
-  - task: PublishTestResults@2
-    condition: succeededOrFailed()
+  - task: PublishBuildArtifacts@1
+    condition: always()
     inputs:
-      testResultsFormat: 'JUnit'
-      testResultsFiles: 'test-results/junit.xml'
-      mergeTestResults: true
-      failTaskOnFailedTests: true
-      testRunTitle: 'Playwright Tests'
-    displayName: 'Publish test results'
-
-  - task: PublishPipelineArtifact@1
-    condition: succeededOrFailed()
-    inputs:
-      targetPath: 'playwright-report'
-      artifact: 'playwright-report'
-      publishLocation: 'pipeline'
-    displayName: 'Publish Playwright HTML report'
+      pathToPublish: 'playwright-report'
+      artifactName: 'playwright-report'
+      publishLocation: 'Container'
